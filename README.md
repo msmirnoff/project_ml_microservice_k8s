@@ -1,42 +1,75 @@
-<include a CircleCI status badge, here>
+# Build Status:
+[![msmirnoff](https://circleci.com/gh/msmirnoff/project_ml_microservice_k8s.svg?style=svg)](https://circleci.com/gh/msmirnoff/project_ml_microservice_k8s)
 
-## Project Overview
+# Project Overview
 
-In this project, you will apply the skills you have acquired in this course to operationalize a Machine Learning Microservice API. 
+This project is a web API frontend to a ML model for house price prediction.
+The web app is a Python Flask app, with the code in `app.py` that expects an API call via HTTP on port 80.
 
-You are given a pre-trained, `sklearn` model that has been trained to predict housing prices in Boston according to several features, such as average rooms in a home and data about highway access, teacher-to-pupil ratios, and so on. You can read more about the data, which was initially taken from Kaggle, on [the data source site](https://www.kaggle.com/c/boston-housing). This project tests your ability to operationalize a Python flask app—in a provided file, `app.py`—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
-
-### Project Tasks
-
-Your project goal is to operationalize this working, machine learning microservice using [kubernetes](https://kubernetes.io/), which is an open-source system for automating the management of containerized applications. In this project you will:
-* Test your project code using linting
-* Complete a Dockerfile to containerize this application
-* Deploy your containerized application using Docker and make a prediction
-* Improve the log statements in the source code for this application
-* Configure Kubernetes and create a Kubernetes cluster
-* Deploy a container using Kubernetes and make a prediction
-* Upload a complete Github repo with CircleCI to indicate that your code has been tested
-
-You can find a detailed [project rubric, here](https://review.udacity.com/#!/rubrics/2576/view).
-
-**The final implementation of the project will showcase your abilities to operationalize production microservices.**
-
----
+# Usage
 
 ## Setup the Environment
 
 * Create a virtualenv and activate it
 * Run `make install` to install the necessary dependencies
 
-### Running `app.py`
+## Running
 
-1. Standalone:  `python app.py`
-2. Run in Docker:  `./run_docker.sh`
-3. Run in Kubernetes:  `./run_kubernetes.sh`
+### Running via docker:
 
-### Kubernetes Steps
+    ./run_docker.sh
 
-* Setup and Configure Docker locally
-* Setup and Configure Kubernetes locally
-* Create Flask app in Container
-* Run via kubectl
+*Note: Minikube or other Docker-in-VM over TCP (e.g. Docker Toolbox) is the assumed Docker daemon.
+Amend $docker_host to localhost if this is not the case in your environment.
+
+The app will be avaiable on port 8000 of the Docker host.
+
+### Running via Kubernetes:
+
+    ./run_kubernetes.sh
+
+On first run, the prompt will return with "error: unable to forward port because pod is not running. Current status=Pending"
+
+Wait about 30-60 seconds for the pod to start and re-run:
+
+    ./run_kubernetes.sh
+
+The app will be avaiable on port 8000 of localhost.
+
+### Running Standalone web app
+
+Standalone web app, runs on port 80:
+
+    python app.py
+
+### Querying
+
+Making API calls can be done via `curl`, a premade script can be used:
+
+    ./make_prediction.sh
+
+## Repository file information
+
+`app.py` - main application
+
+`Dockerfile` - Docker image build directives
+
+`make_prediction.sh` - a script to test the API
+
+`Makefile`- setup and test commands
+
+`README.md` - readme
+
+`requirements.txt` - web application dependencies
+
+`run_docker.sh` - a script to build and tag the Docker image and run the container
+
+`run_kubernete.sh` - a script to run the container in Kubernetes and make it locally accessible
+
+`upload_docker.sh` - a script to upload the image to DockerHub
+
+`.circleci` - CI testing setup
+
+`model_data` - data for the ML model
+
+`output_txt_files` - output from running the app in Docker and Kubernetes
